@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>XamFileStorage.Netstandard</id>
-    <version>0.0.17-Pre</version>
+    <version>0.0.18-Pre</version>
     <authors>Mats Andersson</authors>
     <owners>Mats Andersson</owners>
     <licenseUrl>https://github.com/DuckArne/Plugin.CropImage/blob/master/LICENSE.txt</licenseUrl>

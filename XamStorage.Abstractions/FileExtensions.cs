@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
 
+
 namespace XamStorage
 {
     /// <summary>
@@ -42,5 +43,6 @@ namespace XamStorage
                 }
             }
         }
+
     }
 }

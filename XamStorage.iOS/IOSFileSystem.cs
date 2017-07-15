@@ -109,7 +109,7 @@ namespace XamStorage.iOS
             Requires.NotNullOrEmpty(path, "path");
 
             await AwaitExtensions.SwitchOffMainThreadAsync(cancellationToken);
-
+            
             if (File.Exists(path))
             {
                 return new FileSystemFile(path);
@@ -133,7 +133,7 @@ namespace XamStorage.iOS
             {
                 return new FileSystemFolder(path, true);
             }
-
+            
             return null;
         }
 

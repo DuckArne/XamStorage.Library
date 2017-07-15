@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 #if UWP
 using XamStorage.UWP;
 #elif IOS
@@ -22,7 +23,7 @@ namespace XamStorage
                 if (ret == null)
                 {
                     throw NotImplementedInReferenceAssembly();
-                }
+                }               
                 return ret;
             }
         }
