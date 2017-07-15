@@ -70,4 +70,19 @@ You can´t tick Documents Library there, you have to add that manually together 
     
 ```
 
+# Usage
+WriteFile in Documents directory Example.
+```C#
+            IFolder rootFolder =await  FileSystem.Current.DocumentsFolderAsync();
+            IFolder folder  = await rootFolder.CreateFolderAsync(SaveFolderName, CreationCollisionOption.OpenIfExists);
 
+            IFile file = await folder.CreateFileAsync((Sheets[0].FirstRow.Name.Replace(" ", "") + "_" + Sheets[0].FirstRow.Year + "_V" +                 Sheets[0].FirstRow.Week + ".xls").ToSafeFileName(),
+                CreationCollisionOption.ReplaceExisting);
+                 
+                var memoryStream = new MemoryStream();
+                //Workbook is an ExcelLibrary that saves in the memoryStream
+                Workbook.SaveAs(memoryStream);
+                
+                var bytes = memoryStream.ToArray();
+                await file.WriteAsync(bytes, 0, bytes.Length);
+```
