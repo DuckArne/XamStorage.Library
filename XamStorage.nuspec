@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>XamFileStorage.Netstandard</id>
+    <version>0.0.17-Pre</version>
+    <authors>Mats Andersson</authors>
+    <owners>Mats Andersson</owners>
+    <licenseUrl>https://github.com/DuckArne/Plugin.CropImage/blob/master/LICENSE.txt</licenseUrl>
+    <projectUrl>https://github.com/DuckArne/XamFileStorage</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/jamesmontemagno/Xamarin-Templates/master/Plugins-Templates/icons/plugin_icon_nuget.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Netstandard1.1 Rewrite of PCLStorage</description>
+    <releaseNotes>Added access to common public folders</releaseNotes>
+    <copyright>Copyright 2017 Mats Andersson</copyright>
+    <tags>Xamarin Xamarin.Forms iOS Android UWP </tags>
+    <dependencies>
+    </dependencies>
+  </metadata>
+
+  <files>
+    <file src="XamStorage\bin\Release\netstandard1.1\XamStorage.dll" target="lib\netstandard1.1\XamStorage.dll" />
+    <file src="XamStorage\bin\Release\netstandard1.1\XamStorage.xml" target="lib\netstandard1.1\XamStorage.xml" />
+    <file src="XamStorage\bin\Release\netstandard1.1\XamStorage.pdb" target="lib\netstandard1.1\XamStorage.pdb" />
+    <file src="XamStorage\bin\Release\netstandard1.1\XamStorage.Abstractions.dll" target="lib\netstandard1.1\XamStorage.Abstractions.dll" />
+    <file src="XamStorage\bin\Release\netstandard1.1\XamStorage.Abstractions.xml" target="lib\netstandard1.1\XamStorage.Abstractions.xml" />
+    <file src="XamStorage\bin\Release\netstandard1.1\XamStorage.Abstractions.pdb" target="lib\netstandard1.1\XamStorage.Abstractions.pdb" />
+
+    <file src="XamStorage.Android\bin\Release\XamStorage.dll" target="lib\MonoAndroid10\XamStorage.dll"/>
+    <file src="XamStorage.Android\bin\Release\XamStorage.xml" target="lib\MonoAndroid10\XamStorage.xml"/>
+    <file src="XamStorage.Android\bin\Release\XamStorage.pdb" target="lib\MonoAndroid10\XamStorage.pdb"/>
+    <file src="XamStorage.Android\bin\Release\XamStorage.Abstractions.dll" target="lib\MonoAndroid10\XamStorage.Abstractions.dll"/>
+    <file src="XamStorage.Android\bin\Release\XamStorage.Abstractions.xml" target="lib\MonoAndroid10\XamStorage.Abstractions.xml"/>
+    <file src="XamStorage.Android\bin\Release\XamStorage.Abstractions.pdb" target="lib\MonoAndroid10\XamStorage.Abstractions.pdb"/>
+
+    <file src="XamStorage.iOS\bin\Release\XamStorage.dll" target="lib\Xamarin.iOS10\XamStorage.dll"/>
+    <file src="XamStorage.iOS\bin\Release\XamStorage.xml" target="lib\Xamarin.iOS10\XamStorage.xml"/>
+    <file src="XamStorage.iOS\bin\Release\XamStorage.pdb" target="lib\Xamarin.iOS10\XamStorage.pdb"/>
+    <file src="XamStorage.iOS\bin\Release\XamStorage.Abstractions.dll" target="lib\Xamarin.iOS10\XamStorage.Abstractions.dll"/>
+    <file src="XamStorage.iOS\bin\Release\XamStorage.Abstractions.xml" target="lib\Xamarin.iOS10\XamStorage.Abstractions.xml"/>
+    <file src="XamStorage.iOS\bin\Release\XamStorage.Abstractions.pdb" target="lib\Xamarin.iOS10\XamStorage.Abstractions.pdb"/>
+
+    <file src="XamStorage.UWP\bin\Release\XamStorage.dll" target="lib\UAP10\XamStorage.dll"/>
+    <file src="XamStorage.UWP\bin\Release\XamStorage.xml" target="lib\UAP10\XamStorage.xml"/>
+    <file src="XamStorage.UWP\bin\Release\XamStorage.pdb" target="lib\UAP10\XamStorage.pdb"/>    
+    <file src="XamStorage.UWP\bin\Release\XamStorage.Abstractions.dll" target="lib\UAP10\XamStorage.Abstractions.dll"/>
+    <file src="XamStorage.UWP\bin\Release\XamStorage.Abstractions.xml" target="lib\UAP10\XamStorage.Abstractions.xml"/>
+    <file src="XamStorage.UWP\bin\Release\XamStorage.Abstractions.pdb" target="lib\UAP10\XamStorage.Abstractions.pdb"/>
+  </files>
+</package>
