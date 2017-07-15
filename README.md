@@ -104,3 +104,5 @@ WriteFile in Documents directory Example.
                 await file.WriteAsync(bytes, 0, bytes.Length);
 ```
 # Testing has not been done!
+
+Will be released on Nuget when testing been done.
