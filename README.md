@@ -39,4 +39,35 @@ info.plist
  <key>UIFileSharingEnabled</key>
   <true/>
 ```
-	
+
+On UWP:
+In your appxmanifest  Capabilities, tick the Librarys you are using.
+You can´t tick Documents Library there, you have to add that manually together with Filetype Assosiations.
+```xml
+ </uap:VisualElements>
+ <!-- This -->
+      <Extensions>
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation Name="xls" DesiredView="default">
+            <uap:DisplayName>MyExcelViewer</uap:DisplayName>
+            <uap:SupportedFileTypes>
+              <uap:FileType>.xls</uap:FileType>
+              <uap:FileType>.pdf</uap:FileType>
+              <uap:FileType>.html</uap:FileType>
+            </uap:SupportedFileTypes>
+          </uap:FileTypeAssociation>
+        </uap:Extension>
+      </Extensions>
+      
+    </Application>
+    
+    
+    <!-- And in Capabilities -->
+    <uap:Capability Name="musicLibrary" />
+    <uap:Capability Name="picturesLibrary" />
+    <uap:Capability Name="videosLibrary" />
+    <uap:Capability Name="documentsLibrary" />
+    
+```
+
+
