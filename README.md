@@ -59,7 +59,7 @@ info.plist
 
 On UWP:
 In your appxmanifest  Capabilities, tick the Librarys you are using.
-You can´t tick Documents Library there, you have to add that manually together with Filetype Assosiations.
+You can´t tick Documents Library there, you have to add that manually together with Filetype Associations.
 ```xml
  </uap:VisualElements>
  <!-- This -->
