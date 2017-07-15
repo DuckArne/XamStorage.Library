@@ -26,6 +26,10 @@ A  .NetStandard 1.1 rewrite of dsplaisted [PCLStorage](https://github.com/dsplai
         Task<IFolder> VideosFolderAsync();
 ```
 
+# And WriteAsync in IFile 
+```C#
+ 
+```
 # Write or read from public directorys
 
 On Android:
