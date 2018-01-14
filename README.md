@@ -5,7 +5,7 @@ A  .NetStandard 1.1 rewrite of dsplaisted [PCLStorage](https://github.com/dsplai
 # Added public directorys to FileSystem
 
 ```C#
-  /// <summary>
+        /// <summary>
         /// A public folder representing storage which contains Documents 
         /// </summary>
         Task<IFolder> DocumentsFolderAsync(); 
@@ -26,6 +26,23 @@ A  .NetStandard 1.1 rewrite of dsplaisted [PCLStorage](https://github.com/dsplai
         Task<IFolder> VideosFolderAsync();
 ```
 
+# And WriteAsync in IFile 
+```C#
+        /// <summary>
+        /// Writes data to a binary file.
+        /// </summary>
+        /// <param name="buffer">The buffer to write data from.</param>
+        /// <param name="offset">The zero-based byte offset in buffer from which to begin copying bytes to the stream.</param>
+        /// <param name="count">The maximum number of bytes to write.</param>
+        /// <returns></returns>
+        async public Task WriteAsync(byte[] buffer,int offset,int count)
+        {
+            using (var s = File.Open(Path, FileMode.Open, System.IO.FileAccess.ReadWrite))
+            {
+                await s.WriteAsync(buffer, offset, count);
+            }
+        }
+```
 # Write or read from public directorys
 
 On Android:
@@ -42,7 +59,7 @@ info.plist
 
 On UWP:
 In your appxmanifest  Capabilities, tick the Librarys you are using.
-You can´t tick Documents Library there, you have to add that manually together with Filetype Assosiations.
+You can´t tick Documents Library there, you have to add that manually together with Filetype Associations.
 ```xml
  </uap:VisualElements>
  <!-- This -->
@@ -86,3 +103,6 @@ WriteFile in Documents directory Example.
                 var bytes = memoryStream.ToArray();
                 await file.WriteAsync(bytes, 0, bytes.Length);
 ```
+# Testing has not been done!
+
+Will be released on Nuget when testing been done.
