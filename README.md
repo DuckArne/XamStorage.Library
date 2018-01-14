@@ -105,4 +105,4 @@ WriteFile in Documents directory Example.
 ```
 
 
-Released on Nuget as XamStorage.Library
+Released on Nuget as [XamStorage.Library](https://www.nuget.org/packages/XamFileStorage.Netstandard/)
