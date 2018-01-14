@@ -5,7 +5,7 @@
     <version>1.0.0</version>
     <authors>Mats Andersson</authors>
     <owners>Mats Andersson</owners>
-    <licenseUrl>https://github.com/DuckArne/Plugin.CropImage/blob/master/LICENSE.txt</licenseUrl>
+    <licenseUrl>https://github.com/DuckArne/XamStorage.Library/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/DuckArne/XamFileStorage</projectUrl>
     <iconUrl>https://raw.githubusercontent.com/jamesmontemagno/Xamarin-Templates/master/Plugins-Templates/icons/plugin_icon_nuget.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
