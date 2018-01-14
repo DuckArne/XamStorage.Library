@@ -42,12 +42,6 @@
     <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\XamStorage.Android\FileSystemFile.cs">
-      <Link>FileSystemFile.cs</Link>
-    </Compile>
-    <Compile Include="..\XamStorage.Android\FileSystemFolder.cs">
-      <Link>FileSystemFolder.cs</Link>
-    </Compile>
     <Compile Include="..\XamStorage\AwaitExtensions.cs">
       <Link>AwaitExtensions.cs</Link>
     </Compile>
@@ -63,6 +57,8 @@
     <Compile Include="..\XamStorage\Requires.cs">
       <Link>Requires.cs</Link>
     </Compile>
+    <Compile Include="IOSFileSystemFile.cs" />
+    <Compile Include="IOSFileSystemFolder.cs" />
     <Compile Include="IOSFileSystem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

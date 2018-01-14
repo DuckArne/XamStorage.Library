@@ -1,42 +1,51 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Collections.Generic;
-using System.Linq;
+using Windows.Storage;
 
-namespace XamStorage
+namespace XamStorage.UWP
 {
     /// <summary>
-    /// Represents a folder in the <see cref="DesktopFileSystem"/>
+    /// Represents a folder in the <see cref="UWPFileSystemFolder"/>
     /// </summary>
     [DebuggerDisplay("Path = {_path}")]
-    public class FileSystemFolder : IFolder
+    public class UWPFileSystemFolder : IFolder
     {
         readonly string _name;
         readonly string _path;
         readonly bool _canDelete;
+        internal StorageFolder Folder { get; set; }
 
         /// <summary>
-        /// Creates a new <see cref="FileSystemFolder" /> corresponding to a specified path
+        /// Creates a new <see cref="UWPFileSystemFolder" /> corresponding to a specified path
         /// </summary>
         /// <param name="path">The folder path</param>
         /// <param name="canDelete">Specifies whether the folder can be deleted (via <see cref="DeleteAsync"/>)</param>
-        public FileSystemFolder(string path, bool canDelete)
+        /// <param name="folder">StorageFolder to work from</param>
+        public UWPFileSystemFolder(string path, bool canDelete, StorageFolder folder)
         {
             _name = System.IO.Path.GetFileName(path);
             _path = path;
             _canDelete = canDelete;
+            Folder = folder;
+
+            if (Folder == null)
+            {
+                throw new ArgumentNullException("folder", "StorageFolder param can't be null when initializing new IFolder (UWPFileSystemFolder)");
+            }
         }
 
         /// <summary>
-        /// Creates a new <see cref="FileSystemFolder" /> corresponding to a specified path
+        /// Creates a new <see cref="UWPFileSystemFolder" /> corresponding to a specified path
         /// </summary>
         /// <param name="path">The folder path</param>
+        /// <param name="folder">StorageFolder to work from</param>
         /// <remarks>A folder created with this constructor cannot be deleted via <see cref="DeleteAsync"/></remarks>
-        public FileSystemFolder(string path)
-            : this(path, false)
+        public UWPFileSystemFolder(string path, StorageFolder folder)
+            : this(path, false, folder)
         {
         }
 
@@ -63,63 +72,58 @@ namespace XamStorage
         /// <returns>The newly created file</returns>
         public async Task<IFile> CreateFileAsync(string desiredName, CreationCollisionOption option, CancellationToken cancellationToken)
         {
-           
+            StorageFile newFile = null;
             Requires.NotNullOrEmpty(desiredName, "desiredName");
-
             await AwaitExtensions.SwitchOffMainThreadAsync(cancellationToken);
-            EnsureExists();
 
             string nameToUse = desiredName;
-            string newPath = System.IO.Path.Combine(Path, nameToUse);
-            if (File.Exists(newPath))
+
+            if (await Folder.TryGetItemAsync(nameToUse) != null)
             {
                 if (option == CreationCollisionOption.GenerateUniqueName)
                 {
                     string desiredRoot = System.IO.Path.GetFileNameWithoutExtension(desiredName);
                     string desiredExtension = System.IO.Path.GetExtension(desiredName);
-                    for (int num = 2; File.Exists(newPath); num++)
+                    for (int num = 2; await Folder.TryGetItemAsync(nameToUse) != null; num++)
                     {
                         cancellationToken.ThrowIfCancellationRequested();
-                        nameToUse = desiredRoot + " (" + num + ")" + desiredExtension;
-                        newPath = System.IO.Path.Combine(Path, nameToUse);
+                        nameToUse = desiredRoot + "(" + num + ")" + desiredExtension;
                     }
-                    InternalCreateFile(newPath);
+                    newFile = await Folder.CreateFileAsync(nameToUse);
                 }
+
                 else if (option == CreationCollisionOption.ReplaceExisting)
                 {
-                    File.Delete(newPath);
-                    InternalCreateFile(newPath);
+                    var oldFile = await Folder.GetFileAsync(nameToUse);
+                    await oldFile.DeleteAsync();
+                    newFile = await Folder.CreateFileAsync(nameToUse);
                 }
+
                 else if (option == CreationCollisionOption.FailIfExists)
                 {
-                    throw new IOException("File already exists: " + newPath);
+                    throw new IOException("File already exists: " + System.IO.Path.Combine(Path, nameToUse));
                 }
+
                 else if (option == CreationCollisionOption.OpenIfExists)
                 {
-                    //	No operation
+                    newFile = await Folder.GetFileAsync(desiredName);
                 }
+
                 else
                 {
                     throw new ArgumentException("Unrecognized CreationCollisionOption: " + option);
                 }
             }
+
             else
             {
-                //	Create file
-                InternalCreateFile(newPath);
+                newFile = await Folder.CreateFileAsync(nameToUse);
             }
 
-            var ret = new FileSystemFile(newPath);
+            var ret = new UWPFileSystemFile(newFile.Path, newFile);
             return ret;
         }
 
-        void InternalCreateFile(string path)
-        {
-            using (var stream = File.Create(path))
-            {
-            }
-
-        }
 
         /// <summary>
         /// Gets a file in this folder
@@ -132,11 +136,11 @@ namespace XamStorage
             await AwaitExtensions.SwitchOffMainThreadAsync(cancellationToken);
 
             string path = System.IO.Path.Combine(Path, name);
-            if (!File.Exists(path))
+            if (Folder.TryGetItemAsync(name) == null)
             {
                 throw new Exceptions.FileNotFoundException("File does not exist: " + path);
             }
-            var ret = new FileSystemFile(path);
+            var ret = new UWPFileSystemFile(path, await Folder.GetFileAsync(name));
             return ret;
         }
 
@@ -147,9 +151,14 @@ namespace XamStorage
         public async Task<IList<IFile>> GetFilesAsync(CancellationToken cancellationToken)
         {
             await AwaitExtensions.SwitchOffMainThreadAsync(cancellationToken);
-            EnsureExists();
-            IList<IFile> ret = Directory.GetFiles(Path).Select(f => new FileSystemFile(f)).ToList<IFile>().AsReadOnly();
-            return ret;
+
+            var files = await Folder.GetFilesAsync();
+            IList<IFile> iFiles = new List<IFile>();
+            foreach (var sf in files)
+            {
+                iFiles.Add(new UWPFileSystemFile(sf.Path, sf));
+            }
+            return iFiles;
         }
 
         /// <summary>
@@ -161,28 +170,29 @@ namespace XamStorage
         /// <returns>The newly created folder</returns>
         public async Task<IFolder> CreateFolderAsync(string desiredName, CreationCollisionOption option, CancellationToken cancellationToken)
         {
-            //FIXME ON UWP this method throws Exception UnAuthorizedException but i can still create a folder?
+            StorageFolder newFolder = null;
             Requires.NotNullOrEmpty(desiredName, "desiredName");
             await AwaitExtensions.SwitchOffMainThreadAsync(cancellationToken);
-            EnsureExists();
+
             string nameToUse = desiredName;
             string newPath = System.IO.Path.Combine(Path, nameToUse);
-            if (Directory.Exists(newPath))
+            if (await Folder.TryGetItemAsync(nameToUse) != null)
             {
                 if (option == CreationCollisionOption.GenerateUniqueName)
                 {
-                    for (int num = 2; Directory.Exists(newPath); num++)
+                    for (int num = 2; await Folder.TryGetItemAsync(nameToUse) != null; num++)
                     {
                         cancellationToken.ThrowIfCancellationRequested();
-                        nameToUse = desiredName + " (" + num + ")";
+                        nameToUse = desiredName + "(" + num + ")";
                         newPath = System.IO.Path.Combine(Path, nameToUse);
                     }
-                    Directory.CreateDirectory(newPath);
+                    newFolder = await Folder.CreateFolderAsync(nameToUse);
                 }
                 else if (option == CreationCollisionOption.ReplaceExisting)
                 {
-                    Directory.Delete(newPath, true);
-                    Directory.CreateDirectory(newPath);
+                    var existingFolder = await Folder.GetFolderAsync(nameToUse);
+                    await existingFolder.DeleteAsync();
+                    newFolder = await Folder.CreateFolderAsync(nameToUse);
                 }
                 else if (option == CreationCollisionOption.FailIfExists)
                 {
@@ -190,7 +200,7 @@ namespace XamStorage
                 }
                 else if (option == CreationCollisionOption.OpenIfExists)
                 {
-                    //	No operation
+                    newFolder = await Folder.GetFolderAsync(nameToUse);
                 }
                 else
                 {
@@ -199,12 +209,13 @@ namespace XamStorage
             }
             else
             {
-                Directory.CreateDirectory(newPath);
+                newFolder = await Folder.CreateFolderAsync(nameToUse);
             }
 
-            var ret = new FileSystemFolder(newPath, true);
+            var ret = new UWPFileSystemFolder(newFolder.Path, true, newFolder);
             return ret;
         }
+
 
         /// <summary>
         /// Gets a subfolder in this folder
@@ -218,11 +229,11 @@ namespace XamStorage
 
             await AwaitExtensions.SwitchOffMainThreadAsync(cancellationToken);
             string path = System.IO.Path.Combine(Path, name);
-            if (!Directory.Exists(path))
+            if (await Folder.TryGetItemAsync(name) == null)
             {
                 throw new Exceptions.DirectoryNotFoundException("Directory does not exist: " + path);
             }
-            var ret = new FileSystemFolder(path, true);
+            var ret = new UWPFileSystemFolder(path, true, await Folder.GetFolderAsync(name));
             return ret;
         }
 
@@ -233,8 +244,13 @@ namespace XamStorage
         public async Task<IList<IFolder>> GetFoldersAsync(CancellationToken cancellationToken)
         {
             await AwaitExtensions.SwitchOffMainThreadAsync(cancellationToken);
-            EnsureExists();
-            IList<IFolder> ret = Directory.GetDirectories(Path).Select(d => new FileSystemFolder(d, true)).ToList<IFolder>().AsReadOnly();
+            var folders = await Folder.GetFoldersAsync();
+
+            IList<IFolder> ret = new List<IFolder>();
+            foreach (var sf in folders)
+            {
+                ret.Add(new UWPFileSystemFolder(sf.Path, sf));
+            }
             return ret;
         }
 
@@ -249,21 +265,28 @@ namespace XamStorage
         public async Task<ExistenceCheckResult> CheckExistsAsync(string name, CancellationToken cancellationToken)
         {
             Requires.NotNullOrEmpty(name, "name");
-
             await AwaitExtensions.SwitchOffMainThreadAsync(cancellationToken);
             string checkPath = PortablePath.Combine(this.Path, name);
-            if (File.Exists(checkPath))
-            {
-                return ExistenceCheckResult.FileExists;
-            }
-            else if (Directory.Exists(checkPath))
-            {
-                return ExistenceCheckResult.FolderExists;
-            }
-            else
+            var result = await Folder.TryGetItemAsync(name);
+            if (result == null)
             {
                 return ExistenceCheckResult.NotFound;
             }
+            else if (result.IsOfType(StorageItemTypes.Folder))
+            {
+                return ExistenceCheckResult.FolderExists;
+            }
+            else if (result.IsOfType(StorageItemTypes.File))
+            {
+                return ExistenceCheckResult.FileExists;
+            }
+            else if (result.IsOfType(StorageItemTypes.None))
+            {
+                return ExistenceCheckResult.None;
+            }
+
+            throw new Exception("Fatal Error Not");
+
         }
 
         /// <summary>
@@ -277,16 +300,9 @@ namespace XamStorage
                 throw new IOException("Cannot delete root storage folder.");
             }
             await AwaitExtensions.SwitchOffMainThreadAsync(cancellationToken);
-            EnsureExists();
-            Directory.Delete(Path, true);
+
+            await Folder.DeleteAsync();
         }
 
-        void EnsureExists()
-        {
-            if (!Directory.Exists(Path))
-            {
-                throw new Exceptions.DirectoryNotFoundException("Directory does not exist: " + Path);
-            }
-        }
     }
 }

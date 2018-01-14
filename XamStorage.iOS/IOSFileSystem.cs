@@ -10,22 +10,32 @@ namespace XamStorage.iOS
     public class IOSFileSystem : IFileSystem
     {
         /// <summary>
-        /// A folder representing storage which is local to the current device
+        /// A folder representing storage which is local to the current device. User can not see these files on iOS and Android.
         /// </summary>
         public IFolder LocalStorage {
             get {          
                 var documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
                 var localAppData = Path.Combine(documents, "..", "Library");
-                return new FileSystemFolder(localAppData);
+                return new IOSFileSystemFolder(localAppData,Storage.Local);
             }
         }
 
         /// <summary>
-        /// A folder representing storage which may be synced with other devices for the same user For UWP and Forms Otherwise returns null
+        /// A folder representing storage which may be synced with other devices for the same user. For UWP only Otherwise returns null
         /// </summary>
         public IFolder RoamingStorage {
             get {
                 return null;
+            }
+        }
+
+        /// <summary>
+        /// A folder representing UWP = Applicationdata.LocalFolder,  iOS and Android SpecialFolder.Personal .  If you enable  UIFileSharingEnabled in info.plist on ios app you can share through iTunes.
+        /// </summary>
+        public IFolder PersonalStorage {
+            get {
+                var localAppData = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);              
+                return new IOSFileSystemFolder(localAppData,Storage.Personal);
             }
         }
 
@@ -43,7 +53,7 @@ namespace XamStorage.iOS
             {
                 folderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             }
-            return Task.FromResult((IFolder)new FileSystemFolder(folderPath));
+            return Task.FromResult((IFolder)new IOSFileSystemFolder(folderPath,Storage.Documents));
         }
 
         /// <summary>
@@ -60,7 +70,7 @@ namespace XamStorage.iOS
             {
                 folderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
             }
-            return Task.FromResult((IFolder)new FileSystemFolder(folderPath));
+            return Task.FromResult((IFolder)new IOSFileSystemFolder(folderPath, Storage.Music));
         }
 
         /// <summary>
@@ -77,7 +87,7 @@ namespace XamStorage.iOS
             {
                 folderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
             }
-            return Task.FromResult((IFolder)new FileSystemFolder(folderPath));
+            return Task.FromResult((IFolder)new IOSFileSystemFolder(folderPath,Storage.Pictures));
         }
 
         /// <summary>
@@ -94,7 +104,7 @@ namespace XamStorage.iOS
             {
                 folderPath = Environment.GetFolderPath(Environment.SpecialFolder.MyVideos);
             }
-            return Task.FromResult((IFolder)new FileSystemFolder(folderPath));
+            return Task.FromResult((IFolder)new IOSFileSystemFolder(folderPath, Storage.Videos));
         }
 
 
@@ -112,7 +122,7 @@ namespace XamStorage.iOS
             
             if (File.Exists(path))
             {
-                return new FileSystemFile(path);
+                return new IOSFileSystemFile(path);
             }
 
             return null;
@@ -131,7 +141,7 @@ namespace XamStorage.iOS
             await AwaitExtensions.SwitchOffMainThreadAsync(cancellationToken);
             if (Directory.Exists(path))
             {
-                return new FileSystemFolder(path, true);
+                return new IOSFileSystemFolder(path, true,Storage.Path);
             }
             
             return null;

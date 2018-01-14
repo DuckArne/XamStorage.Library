@@ -18,6 +18,7 @@ namespace XamStorage
         /// </summary>
         string Path { get; }
 
+
         /// <summary>
         /// Creates a file in this folder
         /// </summary>

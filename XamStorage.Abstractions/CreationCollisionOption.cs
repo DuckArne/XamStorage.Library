@@ -10,7 +10,7 @@
         /// </summary>
         GenerateUniqueName = 0,
         /// <summary>
-        /// Replaces any existing file with a new (empty) one
+        /// Replaces any existing file with a new (empty) one. UWP will throw exception if there are any files in folder.
         /// </summary>
         ReplaceExisting = 1,
         /// <summary>

@@ -49,11 +49,12 @@ namespace XamStorage
         /// <summary>
         /// Moves a file.
         /// </summary>
-        /// <param name="newPath">The new full path of the file.</param>
+        /// <param name="newPath">The new full path of the file. Only in use for Android and ios, UWP needs IFolder interface to work. At the moment</param>
+        /// <param name="moveToFolder">Move to this folder</param>
         /// <param name="collisionOption">How to deal with collisions with existing files.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>A task which will complete after the file is moved.</returns>
-        Task MoveAsync(string newPath, NameCollisionOption collisionOption = NameCollisionOption.ReplaceExisting, CancellationToken cancellationToken = default(CancellationToken));
+        Task MoveAsync(string newPath,IFolder moveToFolder, NameCollisionOption collisionOption = NameCollisionOption.ReplaceExisting, CancellationToken cancellationToken = default(CancellationToken));
 
 
         /// <summary>
@@ -64,7 +65,19 @@ namespace XamStorage
         /// <param name="count">The maximum number of bytes to write.</param>
         /// <returns></returns>
         Task WriteAsync(byte[] buffer,int offset, int count);
-      
 
+        /// <summary>
+        /// Reads the contents as a string
+        /// </summary>      
+        /// <returns>The contents of the file</returns>
+        Task<string> ReadAllTextAsync();
+
+        /// <summary>
+        /// Writes text to the file, overwriting any existing data
+        /// </summary>
+        /// <param name="file">The file to write to</param>
+        /// <param name="contents">The content to write to the file</param>
+        /// <returns>A task which completes when the write operation finishes</returns>
+        Task WriteAllTextAsync(string contents);
     }
 }

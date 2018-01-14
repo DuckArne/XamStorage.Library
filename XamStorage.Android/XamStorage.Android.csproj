@@ -61,8 +61,8 @@
     </Compile>
     <Compile Include="AndroidFileSystem.cs" />
     <Compile Include="AndroidHelpers.cs" />
-    <Compile Include="FileSystemFile.cs" />
-    <Compile Include="FileSystemFolder.cs" />
+    <Compile Include="DroidFileSystemFile.cs" />
+    <Compile Include="DroidFileSystemFolder.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

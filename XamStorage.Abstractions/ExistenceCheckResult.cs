@@ -19,5 +19,9 @@
         /// A folder was found at the given path.
         /// </summary>
         FolderExists,
+        /// <summary>
+        /// Some other type? UWP special.
+        /// </summary>
+        None
     }
 }

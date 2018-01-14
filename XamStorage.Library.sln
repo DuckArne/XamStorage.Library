@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.15
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XamStorage", "XamStorage\XamStorage.csproj", "{71434E5A-57CE-4022-BA46-93CB7186F976}"
 EndProject
@@ -114,8 +114,8 @@ Global
 		{D3712154-00F7-4340-8013-EBC5C94E5A51}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 		{D3712154-00F7-4340-8013-EBC5C94E5A51}.Release|x64.ActiveCfg = Release|x64
 		{D3712154-00F7-4340-8013-EBC5C94E5A51}.Release|x64.Build.0 = Release|x64
-		{D3712154-00F7-4340-8013-EBC5C94E5A51}.Release|x86.ActiveCfg = Release|x86
-		{D3712154-00F7-4340-8013-EBC5C94E5A51}.Release|x86.Build.0 = Release|x86
+		{D3712154-00F7-4340-8013-EBC5C94E5A51}.Release|x86.ActiveCfg = Release|Any CPU
+		{D3712154-00F7-4340-8013-EBC5C94E5A51}.Release|x86.Build.0 = Release|Any CPU
 		{007BD0DE-40E9-4CEF-BB72-F7E0126A91F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{007BD0DE-40E9-4CEF-BB72-F7E0126A91F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{007BD0DE-40E9-4CEF-BB72-F7E0126A91F9}.Debug|ARM.ActiveCfg = Debug|Any CPU
@@ -273,5 +273,8 @@ Global
 		{50903DEB-672A-4FC0-A0A9-FDAA9C82691E} = {50192A83-6FA5-433C-A5CF-092E8965A37B}
 		{322B6719-BC1E-4070-9C0B-434E4E3E941E} = {50192A83-6FA5-433C-A5CF-092E8965A37B}
 		{6F8A5799-2E9B-4BEE-95F7-43ED66684D91} = {50192A83-6FA5-433C-A5CF-092E8965A37B}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {23C7C13C-48DB-4CC8-840B-8549C5F86F4F}
 	EndGlobalSection
 EndGlobal

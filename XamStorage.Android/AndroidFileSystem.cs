@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Android.Content;
+using Android.Database;
+using Android.Provider;
+using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,7 +12,7 @@ namespace XamStorage.Android
     /// <summary>
     /// AndroidFileSystem
     /// </summary>
-    public class AndroidFileSystem:IFileSystem
+    public class AndroidFileSystem: IFileSystem
     {
         /// <summary>
         /// A folder representing storage which is local to the current device
@@ -17,7 +20,7 @@ namespace XamStorage.Android
         public IFolder LocalStorage {
             get {             
                 var localAppData = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);             
-                return new FileSystemFolder(localAppData);
+                return new DroidFileSystemFolder(localAppData,Storage.Local);
             }
         }
 
@@ -27,6 +30,16 @@ namespace XamStorage.Android
         public IFolder RoamingStorage {
             get {
                 return null;
+            }
+        }
+
+        /// <summary>
+        /// A folder representing UWP = Applicationdata.LocalFolder,  iOS and Android SpecialFolder.Personal. If you embed files in project root you can get the path with this method.
+        /// </summary>
+        public IFolder PersonalStorage {
+            get {
+                var localAppData = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+                return new DroidFileSystemFolder(localAppData,Storage.Personal);
             }
         }
 
@@ -46,7 +59,7 @@ namespace XamStorage.Android
                 return null;
             }
 
-            return Task.FromResult((IFolder)new FileSystemFolder(folderPath));
+            return Task.FromResult((IFolder)new DroidFileSystemFolder(folderPath, Storage.Documents));
         }
 
         /// <summary>
@@ -65,7 +78,7 @@ namespace XamStorage.Android
                 return null;
             }
 
-            return Task.FromResult((IFolder)new FileSystemFolder(folderPath));
+            return Task.FromResult((IFolder)new DroidFileSystemFolder(folderPath,Storage.Music));
         }
 
         /// <summary>
@@ -84,7 +97,7 @@ namespace XamStorage.Android
                 return null;
             }
 
-            return Task.FromResult((IFolder)new FileSystemFolder(folderPath));
+            return Task.FromResult((IFolder)new DroidFileSystemFolder(folderPath,Storage.Pictures));
         }
 
         /// <summary>
@@ -103,7 +116,7 @@ namespace XamStorage.Android
                 return null;
             }
 
-            return Task.FromResult((IFolder)new FileSystemFolder(folderPath));
+            return Task.FromResult((IFolder)new DroidFileSystemFolder(folderPath,Storage.Videos));
         }
  
         /// <summary>
@@ -120,7 +133,7 @@ namespace XamStorage.Android
 
             if (File.Exists(path))
             {
-                return new FileSystemFile(path);
+                return new DroidFileSystemFile(path);
             }
 
             return null;
@@ -139,12 +152,11 @@ namespace XamStorage.Android
             await AwaitExtensions.SwitchOffMainThreadAsync(cancellationToken);
             if (Directory.Exists(path))
             {
-                return new FileSystemFolder(path, true);
+                return new DroidFileSystemFolder(path, true, Storage.Path);
             }
 
             return null;
-        }
-
-      
+        }       
+       
     }
 }

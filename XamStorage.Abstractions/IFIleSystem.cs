@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace XamStorage
@@ -9,14 +10,22 @@ namespace XamStorage
     public interface IFileSystem
     {
         /// <summary>
-        /// A folder representing storage which is local to the current device
+        /// A folder representing storage which is local to the current device. User can not see these files on iOS and Android.
         /// </summary>
         IFolder LocalStorage { get; }
 
         /// <summary>
-        /// A folder representing storage which may be synced with other devices for the same user. UWP only.
+        /// A folder representing UWP = Applicationdata.LocalFolder,  iOS and Android SpecialFolder.Personal .  If you enable  UIFileSharingEnabled in info.plist on ios app you can share through iTunes.
+        /// The path Property is Absolute.  
+        /// </summary>
+        IFolder PersonalStorage { get; }
+
+        /// <summary>
+        /// A folder representing storage which may be synced with other devices for the same user. UWP only. returns null on iOS and Android.
         /// </summary>
         IFolder RoamingStorage { get; }
+
+
 
         /// <summary>
         /// A public folder representing storage which contains Documents 
@@ -46,6 +55,9 @@ namespace XamStorage
         /// <returns>A file for the given path, or null if it does not exist.</returns>
         Task<IFile> GetFileFromPathAsync(string path, CancellationToken cancellationToken = default(CancellationToken));
 
+        
+       
+
         /// <summary>
         /// Gets a folder, given its path.  Returns null if the folder does not exist.
         /// </summary>
@@ -53,5 +65,7 @@ namespace XamStorage
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>A folder for the specified path, or null if it does not exist.</returns>
         Task<IFolder> GetFolderFromPathAsync(string path, CancellationToken cancellationToken = default(CancellationToken));
+
+        
     }
 }
