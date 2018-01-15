@@ -1,5 +1,6 @@
 # XamStorage.Library
 A  .NetStandard 2.0 rewrite of dsplaisted [PCLStorage](https://github.com/dsplaisted/PCLStorage).
+Released on Nuget as [XamFileStorage.Netstandard](https://www.nuget.org/packages/XamFileStorage.Netstandard/)
 
 
 # Added public directorys to FileSystem
@@ -104,5 +105,3 @@ WriteFile in Documents directory Example.
                 await file.WriteAsync(bytes, 0, bytes.Length);
 ```
 
-
-Released on Nuget as [XamFileStorage.Netstandard](https://www.nuget.org/packages/XamFileStorage.Netstandard/)
