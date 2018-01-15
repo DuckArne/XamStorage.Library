@@ -120,8 +120,7 @@ namespace XamStorage.UWP
                 newFile = await Folder.CreateFileAsync(nameToUse);
             }
 
-            var ret = new UWPFileSystemFile(newFile.Path, newFile);
-            return ret;
+             return new UWPFileSystemFile(newFile.Path, newFile); ;
         }
 
 
@@ -140,8 +139,8 @@ namespace XamStorage.UWP
             {
                 throw new Exceptions.FileNotFoundException("File does not exist: " + path);
             }
-            var ret = new UWPFileSystemFile(path, await Folder.GetFileAsync(name));
-            return ret;
+          
+            return new UWPFileSystemFile(path, await Folder.GetFileAsync(name)); ;
         }
 
         /// <summary>
@@ -212,8 +211,8 @@ namespace XamStorage.UWP
                 newFolder = await Folder.CreateFolderAsync(nameToUse);
             }
 
-            var ret = new UWPFileSystemFolder(newFolder.Path, true, newFolder);
-            return ret;
+             
+            return new UWPFileSystemFolder(newFolder.Path, true, newFolder);
         }
 
 
@@ -233,8 +232,8 @@ namespace XamStorage.UWP
             {
                 throw new Exceptions.DirectoryNotFoundException("Directory does not exist: " + path);
             }
-            var ret = new UWPFileSystemFolder(path, true, await Folder.GetFolderAsync(name));
-            return ret;
+            
+            return new UWPFileSystemFolder(path, true, await Folder.GetFolderAsync(name));
         }
 
         /// <summary>

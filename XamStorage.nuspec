@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>XamFileStorage.Netstandard</id>
-    <version>1.0.1</version>
+    <version>1.0.2-Pre</version>
     <authors>Mats Andersson</authors>
     <owners>Mats Andersson</owners>
     <licenseUrl>https://github.com/DuckArne/XamStorage.Library/blob/master/LICENSE</licenseUrl>

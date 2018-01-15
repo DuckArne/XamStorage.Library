@@ -134,16 +134,17 @@ namespace XamStorage.UWP
 
         }
 
-        ///// <summary>
-        ///// Gets a file, given its Uri.  Returns null if the file does not exist.
-        ///// </summary>
-        ///// <param name="uri">The uri </param>
-        ///// <returns>A file for the given uri, or null if it does not exist.</returns>
-        //async public Task<IFile> GetFileFromUri(Uri uri)
-        //{
-        //    var file = await StorageFile.GetFileFromApplicationUriAsync(uri);
+        /// <summary>
+        /// Gets a file, given its Uri.Returns null if the file does not exist.
+        /// </summary>
+        /// <param name = "uri" > The uri </param>
+        /// <returns>A file for the given uri, or null if it does not exist.</returns>
+        async public Task<IFile> GetFileFromUri(Uri uri)
+        {
+          var file = await StorageFile.GetFileFromApplicationUriAsync(uri);
 
-        //    return new FileSystemFile(file?.Path);
-        //}
+            return new UWPFileSystemFile(file?.Path,file);
+            //TODO TEST!
+        }
     }
 }
