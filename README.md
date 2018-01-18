@@ -50,7 +50,7 @@ On Android:
 In your manifest you need to declare permission READ_EXTERNAL_STORAGE and WRITE_EXTERNAL_STORAGE.
 
 On iOS:
-In order to view and download files from iTunes you need to set UIFileSharing to true (yes).
+In order to view and download files from iTunes you need to set UIFileSharing to true.
 
 info.plist
 ```xml
@@ -97,11 +97,13 @@ WriteFile in Documents directory Example.
             IFile file = await folder.CreateFileAsync((fileName + ".xls").ToSafeFileName(),
                 CreationCollisionOption.ReplaceExisting);
                  
-                var memoryStream = new MemoryStream();
+               using(var memoryStream = new MemoryStream())
+               {
                 //Workbook is an ExcelLibrary that saves in the memoryStream
                 Workbook.SaveAs(memoryStream);
                 
                 var bytes = memoryStream.ToArray();
                 await file.WriteAsync(bytes, 0, bytes.Length);
+               }
 ```
 
