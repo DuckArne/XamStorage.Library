@@ -1,5 +1,6 @@
 # XamStorage.Library
 A  .NetStandard 2.0 rewrite of dsplaisted [PCLStorage](https://github.com/dsplaisted/PCLStorage).
+Released on Nuget as [XamFileStorage.Netstandard](https://www.nuget.org/packages/XamFileStorage.Netstandard/)
 
 
 # Added public directorys to FileSystem
@@ -49,7 +50,7 @@ On Android:
 In your manifest you need to declare permission READ_EXTERNAL_STORAGE and WRITE_EXTERNAL_STORAGE.
 
 On iOS:
-In order to view and download files from iTunes you need to set UIFileSharing to true (yes).
+In order to view and download files from iTunes you need to set UIFileSharing to true.
 
 info.plist
 ```xml
@@ -96,13 +97,13 @@ WriteFile in Documents directory Example.
             IFile file = await folder.CreateFileAsync((fileName + ".xls").ToSafeFileName(),
                 CreationCollisionOption.ReplaceExisting);
                  
-                var memoryStream = new MemoryStream();
+               using(var memoryStream = new MemoryStream())
+               {
                 //Workbook is an ExcelLibrary that saves in the memoryStream
                 Workbook.SaveAs(memoryStream);
                 
                 var bytes = memoryStream.ToArray();
                 await file.WriteAsync(bytes, 0, bytes.Length);
+               }
 ```
 
-
-Released on Nuget as [XamStorage.Library](https://www.nuget.org/packages/XamFileStorage.Netstandard/)
