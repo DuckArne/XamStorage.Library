@@ -65,6 +65,12 @@ namespace XamStorage
         /// <param name="count">The maximum number of bytes to write.</param>
         /// <returns></returns>
         Task WriteAsync(byte[] buffer,int offset, int count);
+       
+        /// <summary>
+        ///  Reads the contents of the file into a byte array, and then closes the file.
+        /// </summary>
+        /// <returns>A byte array containing the contents of the file.</returns>
+        Task<byte[]> ReadAllBytesAsync();
 
         /// <summary>
         /// Reads the contents as a string
@@ -75,7 +81,6 @@ namespace XamStorage
         /// <summary>
         /// Writes text to the file, overwriting any existing data
         /// </summary>
-        /// <param name="file">The file to write to</param>
         /// <param name="contents">The content to write to the file</param>
         /// <returns>A task which completes when the write operation finishes</returns>
         Task WriteAllTextAsync(string contents);

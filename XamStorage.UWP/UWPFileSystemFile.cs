@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.Storage;
@@ -15,7 +16,8 @@ namespace XamStorage.UWP
     {
         string _name;
         string _path;
-        private StorageFile File { get; set; }
+
+        public StorageFile File { get; private set; }
 
         /// <summary>
         /// Creates a new <see cref="UWPFileSystemFile"/> corresponding to the specified path
@@ -177,6 +179,15 @@ namespace XamStorage.UWP
         {
             await FileIO.WriteTextAsync(File, contents);
         }
-    }
 
+        /// <summary>
+        ///  Reads the contents of the file into a byte array, and then closes the file.
+        /// </summary>
+        /// <returns>A byte array containing the contents of the file.</returns>
+        async public Task<byte[]> ReadAllBytesAsync()
+        {
+            var buffer = await FileIO.ReadBufferAsync(File);
+            return WindowsRuntimeBufferExtensions.ToArray(buffer);
+        }
+    }
 }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace XamStorage.Android
 {
     /// <summary>
-    /// Represents a file in the <see cref="DesktopFileSystem"/>
+    /// Represents a file in the <see cref="DroidFileSystemFile"/>
     /// </summary>
     [DebuggerDisplay("Name = {_name}")]
     public class DroidFileSystemFile : IFile
@@ -171,7 +171,6 @@ namespace XamStorage.Android
         /// <summary>
         /// Reads the contents of a file as a string
         /// </summary>
-        /// <param name="file">The file to read </param>
         /// <returns>The contents of the file</returns>
         async public Task<string> ReadAllTextAsync()
         {
@@ -189,7 +188,6 @@ namespace XamStorage.Android
         /// <summary>
         /// Writes text to a file, overwriting any existing data
         /// </summary>
-        /// <param name="file">The file to write to</param>
         /// <param name="contents">The content to write to the file</param>
         /// <returns>A task which completes when the write operation finishes</returns>
        async public Task WriteAllTextAsync(string contents)
@@ -202,6 +200,23 @@ namespace XamStorage.Android
                     await sw.WriteAsync(contents).ConfigureAwait(false);
                 }
             }
+        }
+        /// <summary>
+        ///  Reads the contents of the file into a byte array, and then closes the file.
+        /// </summary>
+        /// <returns>A byte array containing the contents of the file.</returns>
+        async public Task<byte[]> ReadAllBytesAsync()
+        {
+            byte[] result = null;
+            using (var stream = await OpenAsync(FileAccess.Read, default(CancellationToken)).ConfigureAwait(false))
+            {
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    await stream.CopyToAsync(ms);
+                    result = ms.ToArray();
+                }
+            }
+            return result;
         }
     }
 }
