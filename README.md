@@ -6,7 +6,7 @@ A  .NetStandard 2.0 rewrite of dsplaisted [PCLStorage](https://github.com/dsplai
 
 ```C#
         /// <summary>
-        /// A public folder representing storage which contains Documents, If you enable UIFileSharingEnabled in info.plist on ios app           /// you can share through iTunes.  
+        /// A public folder representing storage which contains Documents, If you enable UIFileSharingEnabled in info.plist on ios app you can share through iTunes.  
         /// </summary>
         Task<IFolder> DocumentsFolderAsync();
 
