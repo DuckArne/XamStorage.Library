@@ -27,7 +27,7 @@ Released on Nuget as [XamFileStorage.Netstandard](https://www.nuget.org/packages
         Task<IFolder> VideosFolderAsync();
 ```
 
-# And WriteAsync in IFile 
+# ReadAllBytesAsync and WriteAsync in IFile 
 ```C#
         /// <summary>
         /// Writes data to a binary file.
@@ -43,6 +43,12 @@ Released on Nuget as [XamFileStorage.Netstandard](https://www.nuget.org/packages
                 await s.WriteAsync(buffer, offset, count);
             }
         }
+        
+        /// <summary>
+        ///  Reads the contents of the file into a byte array, and then closes the file.
+        /// </summary>
+        /// <returns>A byte array containing the contents of the file.</returns>
+        Task<byte[]> ReadAllBytesAsync();
 ```
 # Write or read from public directorys
 
