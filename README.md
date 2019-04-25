@@ -1,33 +1,32 @@
 # XamStorage.Library
 A  .NetStandard 2.0 rewrite of dsplaisted [PCLStorage](https://github.com/dsplaisted/PCLStorage).
-Released on Nuget as [XamFileStorage.Netstandard](https://www.nuget.org/packages/XamFileStorage.Netstandard/)
 
 
 # Added public directorys to FileSystem
 
 ```C#
         /// <summary>
-        /// A public folder representing storage which contains Documents 
+        /// A public folder representing storage which contains Documents, If you enable UIFileSharingEnabled in info.plist on ios app you can share through iTunes.  
         /// </summary>
-        Task<IFolder> DocumentsFolderAsync(); 
-        
+        Task<IFolder> DocumentsFolderAsync();
+
         /// <summary>
-        /// A public folder representing storage which contains Music
+        /// A public folder representing storage which contains Music. On iOS this Folder is the Documents directory.
         /// </summary>
         Task<IFolder> MusicFolderAsync();
 
         /// <summary>
-        /// A public folder representing storage which contains Pictures
+        /// A public folder representing storage which contains Pictures. On iOS this Folder is the Documents directory.
         /// </summary>
         Task<IFolder> PicturesFolderAsync();
-      
+
         /// <summary>
-        /// A public folder representing storage which contains Videos
+        /// A public folder representing storage which contains Videos. On iOS this Folder is the Documents directory.
         /// </summary>
         Task<IFolder> VideosFolderAsync();
 ```
 
-# ReadAllBytesAsync and WriteAsync in IFile 
+# And WriteAsync in IFile 
 ```C#
         /// <summary>
         /// Writes data to a binary file.
@@ -43,12 +42,6 @@ Released on Nuget as [XamFileStorage.Netstandard](https://www.nuget.org/packages
                 await s.WriteAsync(buffer, offset, count);
             }
         }
-        
-        /// <summary>
-        ///  Reads the contents of the file into a byte array, and then closes the file.
-        /// </summary>
-        /// <returns>A byte array containing the contents of the file.</returns>
-        Task<byte[]> ReadAllBytesAsync();
 ```
 # Write or read from public directorys
 
@@ -56,13 +49,22 @@ On Android:
 In your manifest you need to declare permission READ_EXTERNAL_STORAGE and WRITE_EXTERNAL_STORAGE.
 
 On iOS:
-In order to view and download files from iTunes you need to set UIFileSharing to true.
+In order to share files through iTunes you need to set UIFileSharing to true (yes).
 
 info.plist
 ```xml
  <key>UIFileSharingEnabled</key>
-  <true/>
+ <true/>
 ```
+Since iOS 11 you can also share with Files app.
+To make all your files in Documents visible in Files app add
+
+info.plist
+```xml
+<key>LSSupportsOpeningDocumentsInPlace</key>
+<true/>
+```
+
 
 On UWP:
 In your appxmanifest  Capabilities, tick the Librarys you are using.
@@ -103,13 +105,13 @@ WriteFile in Documents directory Example.
             IFile file = await folder.CreateFileAsync((fileName + ".xls").ToSafeFileName(),
                 CreationCollisionOption.ReplaceExisting);
                  
-               using(var memoryStream = new MemoryStream())
-               {
+                var memoryStream = new MemoryStream();
                 //Workbook is an ExcelLibrary that saves in the memoryStream
                 Workbook.SaveAs(memoryStream);
                 
                 var bytes = memoryStream.ToArray();
                 await file.WriteAsync(bytes, 0, bytes.Length);
-               }
 ```
 
+
+Released on Nuget as [XamStorage.Library](https://www.nuget.org/packages/XamFileStorage.Netstandard/)

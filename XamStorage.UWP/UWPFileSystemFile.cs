@@ -144,6 +144,7 @@ namespace XamStorage.UWP
                 }
             }
 
+            await File.MoveAsync(f.Folder);
 
             _path = File.Path;
             _name = File.Name;

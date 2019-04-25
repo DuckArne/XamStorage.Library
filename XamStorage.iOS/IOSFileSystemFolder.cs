@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
+using MediaPlayer;
 
 namespace XamStorage.iOS
 {
@@ -70,8 +71,8 @@ namespace XamStorage.iOS
         /// <param name="cancellationToken">The cancellation token.</param>
         /// <returns>The newly created file</returns>
         public async Task<IFile> CreateFileAsync(string desiredName, CreationCollisionOption option, CancellationToken cancellationToken)
-        {
-           
+        {            
+            
             Requires.NotNullOrEmpty(desiredName, "desiredName");
 
             await AwaitExtensions.SwitchOffMainThreadAsync(cancellationToken);
@@ -120,6 +121,8 @@ namespace XamStorage.iOS
             var ret = new IOSFileSystemFile(newPath);
             return ret;
         }
+
+       
 
         void InternalCreateFile(string path)
         {
@@ -295,6 +298,24 @@ namespace XamStorage.iOS
             if (!Directory.Exists(Path))
             {
                 throw new Exceptions.DirectoryNotFoundException("Directory does not exist: " + Path);
+            }
+        }
+
+        private void CheckPermission()
+        {
+            if (Storage == Storage.Music)
+            {
+                var status = MPMediaLibrary.AuthorizationStatus;
+                if (status != MPMediaLibraryAuthorizationStatus.Authorized)
+                {
+                    throw new UnauthorizedAccessException("Add the NSAppleMusicUsageDescription key to your app's Info.plist file, and include a description of how you intend to use the user's media. If this key is not present, the system terminates your app when it tries to access the user's music.");
+                }
+                return;
+            }
+
+            if (Storage == Storage.Videos)
+            {
+
             }
         }
     }
