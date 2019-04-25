@@ -60,7 +60,6 @@
     <Compile Include="IOSFileSystemFile.cs" />
     <Compile Include="IOSFileSystemFolder.cs" />
     <Compile Include="IOSFileSystem.cs" />
-    <Compile Include="PhotoLibraryAccess.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
