@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>XamFileStorage.Netstandard</id>
-    <version>1.1.0</version>
+    <version>1.1.2-Pre</version>
     <authors>Mats Andersson</authors>
     <owners>Mats Andersson</owners>
     <licenseUrl>https://github.com/DuckArne/XamStorage.Library/blob/master/LICENSE</licenseUrl>
@@ -10,7 +10,7 @@
     <iconUrl>https://raw.githubusercontent.com/jamesmontemagno/Xamarin-Templates/master/Plugins-Templates/icons/plugin_icon_nuget.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Netstandard 2.0 Rewrite of PCLStorage</description>
-    <releaseNotes>Added Method ReadAllBytes in IFile</releaseNotes>
+    <releaseNotes>Fixed MoveAsync in Ifile for UWP</releaseNotes>
     <copyright>Copyright 2017 Mats Andersson</copyright>
     <tags>Xamarin Xamarin.Forms iOS Android UWP </tags>
     <dependencies>

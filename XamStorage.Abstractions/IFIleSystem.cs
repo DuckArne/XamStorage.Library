@@ -15,7 +15,7 @@ namespace XamStorage
         IFolder LocalStorage { get; }
 
         /// <summary>
-        /// A folder representing UWP = Applicationdata.LocalFolder,  iOS and Android SpecialFolder.Personal .  If you enable  UIFileSharingEnabled in info.plist on ios app you can share through iTunes.
+        /// A folder representing UWP = Applicationdata.LocalFolder, Android SpecialFolder.Personal, iOS DocumentsFolder.  If you enable  UIFileSharingEnabled in info.plist on ios app you can share through iTunes.
         /// The path Property is Absolute.  
         /// </summary>
         IFolder PersonalStorage { get; }
@@ -28,22 +28,22 @@ namespace XamStorage
 
 
         /// <summary>
-        /// A public folder representing storage which contains Documents 
+        /// A public folder representing storage which contains Documents, If you enable UIFileSharingEnabled in info.plist on ios app you can share through iTunes.  
         /// </summary>
-        Task<IFolder> DocumentsFolderAsync(); 
-        
+        Task<IFolder> DocumentsFolderAsync();
+
         /// <summary>
-        /// A public folder representing storage which contains Music
+        /// A public folder representing storage which contains Music. On iOS this Folder is the Documents directory.
         /// </summary>
         Task<IFolder> MusicFolderAsync();
 
         /// <summary>
-        /// A public folder representing storage which contains Pictures
+        /// A public folder representing storage which contains Pictures. On iOS this Folder is the Documents directory.
         /// </summary>
         Task<IFolder> PicturesFolderAsync();
-      
+
         /// <summary>
-        /// A public folder representing storage which contains Videos
+        /// A public folder representing storage which contains Videos. On iOS this Folder is the Documents directory.
         /// </summary>
         Task<IFolder> VideosFolderAsync();
 
